@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Eat Easy</title>
+	<meta charset = "utf-8" />
+	{% load staticfiles %}
+	<link rel = "stylesheet" href = "{% static 'css/bootstrap.css' %}" type = "text/css" />
+
+	<!-- Make everything nice and squishable -->
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+</head>
+
+<body class = "body" style = "background-color: #f6f6f6">
+	<div>
+	   {% block content %}
+	   {% endblock %}
+
+	   {% include "Restaurants/includes/snip1.html" %}
+	</div>
+</body>
+
+</html>

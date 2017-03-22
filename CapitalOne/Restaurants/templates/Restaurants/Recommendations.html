@@ -1,0 +1,12 @@
+{% extends "Restaurants/header.html" %}
+
+{% block content %}
+
+{% for recommend in object_list %}
+
+<h3>{{recommend.name}}</h3>
+
+
+{% endfor %}
+
+{% endblock %}

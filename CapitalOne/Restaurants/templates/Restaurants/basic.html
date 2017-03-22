@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--	
+   FREE SINGLE PAGE DESIGN BY AYATHEMES.COM
+	Free for personal and commercial use under the CCA 3.0 license (AYATHEMES/COM/license)
+-->
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eat Easy</title>
+  <!-- Bootstrap -->
+  {% load staticfiles %}
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+  <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/lightbox/css/lightbox.min.css' %}" >
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" >
+
+  <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.--><script>var __adobewebfontsappname__="dreamweaver"</script><script src="http://use.edgefonts.net/open-sans:n3,n4:default.js" type="text/javascript"></script>
+<style>
+body{
+	background-color: #2f4f4f;
+}
+section{
+	background-color: #43BFC7;
+}
+label{
+  display: inline-block;
+  width: 500px;
+  text-align: left;
+  font-size: 16px;
+}​
+div.hidden{
+	display: none;
+	visibility: hidden;
+}
+</style>
+
+</head>
+  <body>
+  
+
+  <div id="carousel1" class="carousel slide" data-ride="carousel">
+  	<div class="carousel-inner" role="listbox">
+  		<div class="item active">
+			<img src="{% static 'images/CapOne.png' %}" alt="First slide image" class="center-block" style="width:70%;height:70%;">
+  			<div class="carousel-caption">
+  				<h3>Eat Easy</h3>
+  				<p><span>the mathematically sound restaurant selector</span></p>
+				<p><strong>sponsored by a prospective capital one intern</strong></p>
+			</div>
+			<!-- / carousel-caption -->
+		</div>
+	  </div>
+
+	</div>
+ 
+ <!--features-->
+  <section class="container section" id="features">
+  	<h1 class="text-uppercase section-title text-center">How it works</h1>
+  	<div class="row">
+  		
+		<div class="col-md-6">
+  			<h3 class="text-uppercase">make your selection</h3>
+			<p style="font-size: 16px">To obtain your restaurant recommendations, start by entering in a value for how much you care about various factors associated with dining. Preferences can take on values from -10 to 10, depending on if you want to maximize or minimize a particular factor. For example, if you want a fancy dining experience close to home, you might enter an 8 for cost to indicate a desire for more expensive restaurants, but a -7 for distance to indicate a preference to avoid travelling very far. Preference values of 0 and blank preference boxes indicate that you don't care at all about a particular factor. So, if you're ambivalent to the number of flamingos near the restaurant, but a 0 in the flamingos field, or leave it blank.</p>
+			<p style="font-size: 16px">Once you've filled in all of your preferences, hit the submit button to see a list of the restaurants that best match up with your indicated preferences. Please note that to receive relevant results, you must permit Eat Easy to use your location.</p>
+		</div>
+  		<div class="col-md-6">
+			<img src="https://media-cdn.tripadvisor.com/media/photo-s/02/91/b0/bf/filename-120402-stock.jpg" style="width:100%;height:100%;" class="pull-right"/>
+		</div>
+</div>
+<!-- / row -->
+  </section>
+  <section class="section container" id="blog">
+  	<h1 class="text-center text-uppercase section-title">restaurant selector</h1>
+  	<div class="row">
+
+	 <div class="col-md-12">
+  		<div>
+  			<div class="caption">
+  				<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
+  				<form method="POST" action="/search" id="preferences">
+					{% csrf_token %}
+					<div>
+						<input type="text" name="costTextfield">
+						<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
+					</div>
+					<div>
+						<input type="text" name="distTextfield">
+						<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
+					</div>
+					<div>
+						<input type="text" name="popuTextfield">
+						<label>Popularity: (-10 = Poorly Rated) -> (10 = Highly Acclaimed)</label>
+					</div>
+					
+					<!-- Grab the user's location -->
+					<div class = "hidden">
+						<input type="text" name="latiTextfield" id = "lat" value="Error1">
+						<input type="text" name="longTextfield" id = "long" value = "Error1">
+					</div>
+				</form>
+				<button onclick="getLocation()">Find me food!</button>
+			</div>
+			<!-- / caption -->
+		</div>
+	 </div>
+
+  </div>
+  </section>
+
+  <script>
+	var x = document.getElementById("lat");
+	var y = document.getElementById("long");
+	
+	function getLocation() {
+	    if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(showPosition);
+	    } else { 
+	        x.value = "Error2";
+	        y.value = "Error2";
+	        document.getElementById('preferences').submit();
+	    }
+	}
+
+	function showPosition(position) {
+	    x.value = position.coords.latitude;
+	    y.value = position.coords.longitude;
+	    document.getElementById('preferences').submit();
+	}
+
+</script>
+
+  <footer class="footer container-fluid text-center">
+  	<div class="logo"><span>Eat Easy</span></div>
+
+	<!--you must keep the link bellow, you are not allowed to remove it, if you want to remove it please contact us at aythemes.com/contact -->
+	<div class="backlink"><a href="http://ayathemes.com">A link at the behest of the source code supplier</a></div>
+  </footer>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed --> 
+	<script src="{% static 'js/bootstrap.js' %}"></script>
+	
+	<!--custom javascript file	-->
+	<script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>
