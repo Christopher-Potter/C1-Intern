@@ -1,0 +1,4 @@
+# C1-Intern
+Capital One Internship Application Project
+
+This website is designed to interface with Yelp's Fusion API in order to provide users with a tool to help plan excursions. The website allows users to indicate the sort of venue they are looking for, be it a restaurant, an activity, a source of entertainment... as well as their preferences for a small number of significant consideration factors, such as cost, distance, and popularity. After using this information to come up with a list of recommendations, the website displays relevant factors about each of the most optimal results, such as keywords associated with the location, a link to directions on how to get there, and a link to the location's Yelp page. Further information may be found on the website itself at https://mechtekguy.pythonanywhere.com
