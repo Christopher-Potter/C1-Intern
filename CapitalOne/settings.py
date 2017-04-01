@@ -26,7 +26,7 @@ SECRET_KEY = 'z=_igx459sc*-^a2ygsaj6@-wuha&t_)b#_j%ngi8szs6y#=5('
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+SECURE_SSL_REDIRECT = True
 
 # Application definition
 

@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Eat Easy</title>
+  <title>Urban Connoisseur</title>
   <!-- Bootstrap -->
   {% load staticfiles %}
   <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
@@ -19,10 +19,8 @@
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
   <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/font-awesome.min.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'js/lightbox/css/lightbox.min.css' %}" >
   <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" >
 
-  <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.--><script>var __adobewebfontsappname__="dreamweaver"</script><script src="http://use.edgefonts.net/open-sans:n3,n4:default.js" type="text/javascript"></script>
 <style>
 body{
 	background-color: #2f4f4f;
@@ -50,12 +48,6 @@ div.hidden{
   	<div class="carousel-inner" role="listbox">
   		<div class="item active">
 			<img src="{% static 'images/CapOne.png' %}" alt="First slide image" class="center-block" style="width:70%;height:70%;">
-  			<div class="carousel-caption">
-  				<h3>Eat Easy</h3>
-  				<p><span>the mathematically sound restaurant selector</span></p>
-				<p><strong>sponsored by a prospective capital one intern</strong></p>
-			</div>
-			<!-- / carousel-caption -->
 		</div>
 	  </div>
 
@@ -67,9 +59,12 @@ div.hidden{
   	<div class="row">
   		
 		<div class="col-md-6">
+			<h3 class="text-uppercase">what is it?</h3>
+			<p style="font-size: 16px">Have you ever been in the mood to go out, but not known exactly what to do? Have you ever spent what seems like hours discussing what to eat with your friends or family? If so, Urban Connoisseur is here to help. It’s also here to help if neither of the above are true. It’s just that nice.</p>
   			<h3 class="text-uppercase">make your selection</h3>
-			<p style="font-size: 16px">To obtain your restaurant recommendations, start by entering in a value for how much you care about various factors associated with dining. Preferences can take on values from -10 to 10, depending on if you want to maximize or minimize a particular factor. For example, if you want a fancy dining experience close to home, you might enter an 8 for cost to indicate a desire for more expensive restaurants, but a -7 for distance to indicate a preference to avoid travelling very far. Preference values of 0 and blank preference boxes indicate that you don't care at all about a particular factor. So, if you're ambivalent to the number of flamingos near the restaurant, but a 0 in the flamingos field, or leave it blank.</p>
-			<p style="font-size: 16px">Once you've filled in all of your preferences, hit the submit button to see a list of the restaurants that best match up with your indicated preferences. Please note that to receive relevant results, you must permit Eat Easy to use your location.</p>
+			<p style="font-size: 16px">To use Urban Connoisseur, indicate what type of experience you’re looking for, be it a nice restaurant, or something to relieve the existential dread of pondering one’s own existence. Afterwards, indicate the maximum number of results you would like Urban Connoisseur to provide, and it will provide as many as it can up to that number. To determine what sort of results Urban Connoisseur will supply, enter your preferences for the various factors presented below.</p>
+			<p style="font-size: 16px">Preferences can take on values from -10 to 10, depending on if you want to maximize or minimize a particular factor. For example, if you want a fancy dining experience close to home, you might enter an 8 for cost to indicate a desire for more expensive restaurants, but a -7 for distance to indicate a preference to avoid travelling very far. Preference values of 0 and blank preference boxes indicate that you don't care at all about a particular factor. So, if you're ambivalent to the number of flamingos near the location, put a 0 in the flamingos field, or leave it blank.</p>
+			<p style="font-size: 16px">Once you've filled in all of your preferences, hit the submit button to see a list of the locations that best match up with your indicated preferences. Please note that to receive relevant results, you must permit Urban Connoisseur to use your location information.</p>
 		</div>
   		<div class="col-md-6">
 			<img src="https://media-cdn.tripadvisor.com/media/photo-s/02/91/b0/bf/filename-120402-stock.jpg" style="width:100%;height:100%;" class="pull-right"/>
@@ -78,15 +73,40 @@ div.hidden{
 <!-- / row -->
   </section>
   <section class="section container" id="blog">
-  	<h1 class="text-center text-uppercase section-title">restaurant selector</h1>
+  	<h1 class="text-center text-uppercase section-title">experience selector</h1>
   	<div class="row">
 
 	 <div class="col-md-12">
   		<div>
   			<div class="caption">
-  				<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
+  				
   				<form method="POST" action="/search" id="preferences">
 					{% csrf_token %}
+					<h3>What are you looking for?</h3>
+					<div>
+						<input type="radio" name="typeSelect" value = "1">
+						<label>Restaurants</label>
+					</div>
+					<div>
+						<input type="radio" name="typeSelect" value = "2">
+						<label>Activities</label>
+					</div>
+					<div>
+						<input type="radio" name="typeSelect" value = "3">
+						<label>Entertainment</label>
+					</div>
+					<div>
+						<input type="radio" name="typeSelect" value = "4">
+						<label>Nightlife</label>
+					</div>
+
+					<h3 class="text-uppercase">Max number of desired results?</h3>
+					<div>
+						<input type="text" name="resuTextfield", value = "3">
+						<label>Assumes 3 by default (50 max)</label>
+					</div>
+
+					<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
 					<div>
 						<input type="text" name="costTextfield">
 						<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
@@ -97,16 +117,20 @@ div.hidden{
 					</div>
 					<div>
 						<input type="text" name="popuTextfield">
-						<label>Popularity: (-10 = Poorly Rated) -> (10 = Highly Acclaimed)</label>
+						<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
+					</div>
+					<div>
+						<input type="text" name="immeTextfield">
+						<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
 					</div>
 					
 					<!-- Grab the user's location -->
 					<div class = "hidden">
-						<input type="text" name="latiTextfield" id = "lat" value="Error1">
-						<input type="text" name="longTextfield" id = "long" value = "Error1">
+						<input type="text" name="latiTextfield" id = "lat" value="Error">
+						<input type="text" name="longTextfield" id = "long" value = "Error">
 					</div>
 				</form>
-				<button onclick="getLocation()">Find me food!</button>
+				<button onclick="getLocation()">Find me something!</button>
 			</div>
 			<!-- / caption -->
 		</div>
@@ -115,6 +139,7 @@ div.hidden{
   </div>
   </section>
 
+<!-- Grab the location -->
   <script>
 	var x = document.getElementById("lat");
 	var y = document.getElementById("long");
@@ -123,8 +148,8 @@ div.hidden{
 	    if (navigator.geolocation) {
 	        navigator.geolocation.getCurrentPosition(showPosition);
 	    } else { 
-	        x.value = "Error2";
-	        y.value = "Error2";
+	        x.value = "Error";
+	        y.value = "Error";
 	        document.getElementById('preferences').submit();
 	    }
 	}
@@ -138,18 +163,11 @@ div.hidden{
 </script>
 
   <footer class="footer container-fluid text-center">
-  	<div class="logo"><span>Eat Easy</span></div>
+  	<div class="logo"><span>Urban Connoisseur</span></div>
 
 	<!--you must keep the link bellow, you are not allowed to remove it, if you want to remove it please contact us at aythemes.com/contact -->
-	<div class="backlink"><a href="http://ayathemes.com">A link at the behest of the source code supplier</a></div>
+	<div class="backlink"><a href="http://ayathemes.com">At the behest of the source code supplier</a></div>
   </footer>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
 
-	<!-- Include all compiled plugins (below), or include individual files as needed --> 
-	<script src="{% static 'js/bootstrap.js' %}"></script>
-	
-	<!--custom javascript file	-->
-	<script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>

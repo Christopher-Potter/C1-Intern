@@ -52,47 +52,11 @@ div.hidden{
 	</div>
 	<div>'</div>
 
-{% for recommend in contents %}
-	<section class="container section">
-		
-		<h1 class="text-center text-uppercase section-title">{{recommend.name}}</h1>
-		<h2 class="text-uppercase">Option {{recommend.NUMBER}}</h2>
-		<div class="col-md-6">
-			<h3>Address:</h3>
-			{% for line in recommend.location.display_address %}
-				<h4>{{line}}</h4>
-			{% endfor %}
 
-			<h3>What To Expect:</h3>
-			{% for line in recommend.categories %}
-				<h4>{{line.title}}</h4>
-			{% endfor %}
+<section class="container section">
+	<h2>{{contents}}</h2>
+</section>
 
-			<h3>Price: {{recommend.price}}</h3>
-			<h3>Rating: {{recommend.rating}}</h3>
-
-			<h3>Number of reviews: {{recommend.review_count}}</h3>
-
-			<h3>Phone: {{recommend.display_phone}}</h3>
-
-
-			<form action="{{recommend.url}}">
-			    <input type="submit" value="Yelp Website" />
-			</form>
-			<p></p>
-			<form action="https://www.google.com/maps/dir/{{coords.0}},+{{coords.1}}/{{recommend.coordinates.latitude}},+{{recommend.coordinates.longitude}}">
-			    <input type="submit" value="Get Me Directions!" />
-			</form>
-
-		</div>
-		<div class="col-md-6">
-			<img src = '{{recommend.image_url}}' style="width:100%;height:100%;" class="pull-right"/>
-		</div>
-
-	</section>
-	
-
-{% endfor %}
 <footer class="footer container-fluid text-center">
   	<div class="logo"><span>Urban Connoisseur</span></div>
 
