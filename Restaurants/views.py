@@ -7,23 +7,13 @@ import math
 
 # Render the main page
 def index(request):
-    try: #Preserve user entered preferences
-        print("Working", COST)
-        return render(request, 'Restaurants/basic.html', {'prior': [COST, DIST, POPU, IMME, RESNUM, CHOICE]})
-    except: #If the user had no saved preferences.
-        print("Sad")
-        return render(request, 'Restaurants/basic.html')
+    return render(request, 'Restaurants/basic.html')
 
 # Wait on the user's request
 def search(request):
     if request.method == 'POST':
         #Grab the html values
-        global COST
-        global DIST
-        global IMME
-        global RESNUM
-        global POPU
-        global CHOICE
+
         cost = request.POST.get('costTextfield', None)
         dist = request.POST.get('distTextfield', None)
         popu = request.POST.get('popuTextfield', None)
@@ -31,13 +21,7 @@ def search(request):
         resultNum = request.POST.get('resuTextfield', None)
         typeS = request.POST.get('typeSelect', None)
 
-        #Global variable usage to enable persistent preferences
-        COST = cost
-        DIST = dist
-        POPU = popu
-        IMME = imme
-        RESNUM = resultNum
-        CHOICE = typeS
+        print(typeS)
 
         #Interpreting in the preferences
         data = [cost, dist, popu, imme]

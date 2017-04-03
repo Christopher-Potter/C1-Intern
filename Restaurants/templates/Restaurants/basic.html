@@ -41,7 +41,7 @@ div.hidden{
 </style>
 
 </head>
-  <body>
+  <body onload="setFields()">
   
   	<a name = "Top"></a>
   <div id="carousel1" class="carousel slide" data-ride="carousel">
@@ -75,7 +75,7 @@ div.hidden{
   			<h3 class="text-uppercase">make your selection</h3>
 			<p style="font-size: 16px">To use Urban Connoisseur, indicate what type of experience you’re looking for, be it a nice restaurant, or somewhere to meet up with friends. You then specify the maximum number of results you would like Urban Connoisseur to provide, and it will provide as many as it can up to that number. To determine what sort of results Urban Connoisseur will supply, enter your preferences for the various factors presented below.</p>
 			<p style="font-size: 16px">Preferences can take on values from -10 to 10, depending on if you want to maximize or minimize a particular factor. For example, if you want a fancy dining experience close to home, you might enter an 8 for cost to indicate a desire for more expensive restaurants, but a -7 for distance to indicate a preference to avoid travelling very far. Preference values of 0 and blank preference boxes indicate that you don't care at all about a particular factor. So, if you're ambivalent to the number of flamingos near the location, put a 0 in the flamingos field, or leave it blank.</p>
-			<p style="font-size: 16px">Once you've filled in all of your preferences, hit the submit button to see a list of the locations that best match up with your indicated preferences. Please note that to receive relevant results, you must permit Urban Connoisseur to use your location information.</p>
+			<p style="font-size: 16px">Once you've filled in all of your preferences, hit the submit button to see a list of the locations that best match up with your indicated preferences. Please note that to receive relevant results, you must permit Urban Connoisseur to use your location information. Please further note that if you want Urban Connoisseur to remember your preferences, you must permit the use of cookies.</p>
 		</div>
   		<div class="col-md-6">
 			<img src="https://media-cdn.tripadvisor.com/media/photo-s/02/91/b0/bf/filename-120402-stock.jpg" style="width:100%;height:100%;" class="pull-right"/>
@@ -96,105 +96,53 @@ div.hidden{
   				
   				<form method="POST" action="/search" id="preferences">
 					{% csrf_token %}
-					<h3>What are you looking for?</h3>
-					{% if prior %} <!-- Persisting preferences the hard way -->
-						<div>
-							<input type="radio" name="typeSelect" value = "1" id="1">
-							<label>Restaurants</label>
-						</div>
-						<div>
-							<input type="radio" name="typeSelect" value = "2" id="2">
-							<label>Activities</label>
-						</div>
-						<div>
-							<input type="radio" name="typeSelect" value = "3" id="3">
-							<label>Entertainment</label>
-						</div>
-						<div>
-							<input type="radio" name="typeSelect" value = "4" id="4">
-							<label>Nightlife</label>
-						</div>
-						<script>
-							document.getElementById({{prior.5}}).checked = "checked";
-						</script>
-						<h3 class="text-uppercase">Max number of desired results?</h3>
-						<div>
-							<input type="text" name="resuTextfield", value = "{{prior.4}}">
-							<label>Assumes 3 by default (50 max)</label>
-						</div>
+				<h3>What are you looking for?</h3>
+					<div>
+						<input type="radio" name="typeSelect" value = "1" id = "1" checked="">
+						<label>Restaurants</label>
+					</div>
+					<div>
+						<input type="radio" name="typeSelect" value = "2" id = "2" checked="">
+						<label>Activities</label>
+					</div>
+					<div>
+						<input type="radio" name="typeSelect" value = "3" id = "3" checked="">
+						<label>Entertainment</label>
+					</div>
+					<div>
+						<input type="radio" name="typeSelect" value = "4" id = "4" checked="">
+						<label>Nightlife</label>
+					</div>
+					<h3 class="text-uppercase">Max number of desired results?</h3>
+					<div>
+						<input type="text" name="resuTextfield", value = "3">
+						<label>Assumes 3 by default (50 max)</label>
+					</div>
 
-						<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
-						<div>
-							<input oninput="rangeInputC.value=costTextfield.value" id="box" type="text" value="{{prior.0}}" name="costTextfield" for="rangeInputC" oninput="rangeInputC.value=costTextfield.value" />
-							<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
-							<input for="costTextfield" oninput="costTextfield.value=rangeInputC.value" value="{{prior.0}}" id="slider" type="range" min="-10" max="10" name="rangeInputC" style = "width: 50%"/>
-						</div>
-						<div style="color: #43BFC7;">'</div>
-						<div>
-							<input oninput="rangeInputD.value=distTextfield.value" id="box" type="text" value="{{prior.1}}" name="distTextfield" for="rangeInputD" oninput="rangeInputD.value=distTextfield.value" />
-							<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
-							<input for="distTextfield" oninput="distTextfield.value=rangeInputD.value" value="{{prior.1}}" id="slider" type="range" min="-10" max="10" name="rangeInputD" style = "width: 50%"/>
-						</div>
-						<div style="color: #43BFC7;">'</div>
-						<div>
-							<input oninput="rangeInputA.value=popuTextfield.value" id="box" type="text" value="{{prior.2}}" name="popuTextfield" for="rangeInputA" oninput="rangeInputA.value=popuTextfield.value" />
-							<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
-							<input for="popuTextfield" oninput="popuTextfield.value=rangeInputA.value" id="slider" value="{{prior.2}}" type="range" min="-10" max="10" name="rangeInputA" style = "width: 50%"/>
-	      				</div>
-	      				<div style="color: #43BFC7;">'</div>
-						<div>
-							<input oninput="rangeInputI.value=immeTextfield.value" id="box" type="text" value="{{prior.3}}" name="immeTextfield" for="rangeInputI" oninput="rangeInputI.value=immeTextfield.value" />
-							<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
-							<input for="immeTextfield" oninput="immeTextfield.value=rangeInputI.value" id="slider" value="{{prior.3}}" type="range" min="-10" max="10" name="rangeInputI" style = "width: 50%"/>
-						</div>
-					{% else %}
-						<div>
-							<input type="radio" name="typeSelect" value = "1">
-							<label>Restaurants</label>
-						</div>
-						<div>
-							<input type="radio" name="typeSelect" value = "2">
-							<label>Activities</label>
-						</div>
-						<div>
-							<input type="radio" name="typeSelect" value = "3">
-							<label>Entertainment</label>
-						</div>
-						<div>
-							<input type="radio" name="typeSelect" value = "4">
-							<label>Nightlife</label>
-						</div>
-						<h3 class="text-uppercase">Max number of desired results?</h3>
-						<div>
-							<input type="text" name="resuTextfield", value = "3">
-							<label>Assumes 3 by default (50 max)</label>
-						</div>
-
-						<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
-						<div>
-							<input oninput="rangeInputC.value=costTextfield.value" id="box" type="text" value="0" name="costTextfield" for="rangeInputC" oninput="rangeInputC.value=costTextfield.value" />
-							<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
-							<input for="costTextfield" oninput="costTextfield.value=rangeInputC.value" id="slider" type="range" min="-10" max="10" name="rangeInputC" style = "width: 50%"/>
-						</div>
-						<div style="color: #43BFC7;">'</div>
-						<div>
-							<input oninput="rangeInputD.value=distTextfield.value" id="box" type="text" value="0" name="distTextfield" for="rangeInputD" oninput="rangeInputD.value=distTextfield.value" />
-							<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
-							<input for="distTextfield" oninput="distTextfield.value=rangeInputD.value" id="slider" type="range" min="-10" max="10" name="rangeInputD" style = "width: 50%"/>
-						</div>
-						<div style="color: #43BFC7;">'</div>
-						<div>
-							<input oninput="rangeInputA.value=popuTextfield.value" id="box" type="text" value="0" name="popuTextfield" for="rangeInputA" oninput="rangeInputA.value=popuTextfield.value" />
-							<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
-							<input for="popuTextfield" oninput="popuTextfield.value=rangeInputA.value" id="slider" type="range" min="-10" max="10" name="rangeInputA" style = "width: 50%"/>
-	      				</div>
-	      				<div style="color: #43BFC7;">'</div>
-						<div>
-							<input oninput="rangeInputI.value=immeTextfield.value" id="box" type="text" value="0" name="immeTextfield" for="rangeInputI" oninput="rangeInputI.value=immeTextfield.value" />
-							<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
-							<input for="immeTextfield" oninput="immeTextfield.value=rangeInputI.value" id="slider" type="range" min="-10" max="10" name="rangeInputI" style = "width: 50%"/>
-						</div>
-					{% endif %}
+					<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
+					<div>
+						<input oninput="rangeInputC.value=costTextfield.value" id="box" type="text" value="0" name="costTextfield" for="rangeInputC" oninput="rangeInputC.value=costTextfield.value" />
+						<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
+						<input for="costTextfield" oninput="costTextfield.value=rangeInputC.value" id="slider" type="range" min="-10" max="10" name="rangeInputC" style = "width: 50%"/>
+					</div>
+					<div style="color: #43BFC7;">'</div>
+					<div>
+						<input oninput="rangeInputD.value=distTextfield.value" id="box" type="text" value="0" name="distTextfield" for="rangeInputD" oninput="rangeInputD.value=distTextfield.value" />
+						<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
+						<input for="distTextfield" oninput="distTextfield.value=rangeInputD.value" id="slider" type="range" min="-10" max="10" name="rangeInputD" style = "width: 50%"/>
+					</div>
+					<div style="color: #43BFC7;">'</div>
+					<div>
+						<input oninput="rangeInputA.value=popuTextfield.value" id="box" type="text" value="0" name="popuTextfield" for="rangeInputA" oninput="rangeInputA.value=popuTextfield.value" />
+						<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
+						<input for="popuTextfield" oninput="popuTextfield.value=rangeInputA.value" id="slider" type="range" min="-10" max="10" name="rangeInputA" style = "width: 50%"/>
+      				</div>
+      				<div style="color: #43BFC7;">'</div>
+					<div>
+						<input oninput="rangeInputI.value=immeTextfield.value" id="box" type="text" value="0" name="immeTextfield" for="rangeInputI" oninput="rangeInputI.value=immeTextfield.value" />
+						<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
+						<input for="immeTextfield" oninput="immeTextfield.value=rangeInputI.value" id="slider" type="range" min="-10" max="10" name="rangeInputI" style = "width: 50%"/>
+					</div>
 					
 					<!-- Grab the user's location -->
 					<div class = "hidden">
@@ -215,6 +163,18 @@ div.hidden{
   <script>
 	var x = document.getElementById("lat");
 	var y = document.getElementById("long");
+
+	var w = document.getElementsByName("typeSelect");
+	var z = document.getElementsByName("resuTextfield");
+	var i = document.getElementsByName("costTextfield");
+	var j = document.getElementsByName("distTextfield");
+	var k = document.getElementsByName("popuTextfield");
+	var l = document.getElementsByName("immeTextfield");
+
+	var si = document.getElementsByName("rangeInputC");
+	var sj = document.getElementsByName("rangeInputD");
+	var sk = document.getElementsByName("rangeInputA");
+	var sl = document.getElementsByName("rangeInputI");
 	
 	function getLocation() {
 	    if (navigator.geolocation) {
@@ -226,12 +186,65 @@ div.hidden{
 	    }
 	}
 	function showPosition(position) {
+		for (iter = 0; iter < 4; iter++){
+			if (w[iter].checked){
+				document.cookie = "radio="+escape(w[iter].value);
+			}
+		}
+		document.cookie = "resu="+escape(z[0].value);
+		document.cookie = "cost="+escape(i[0].value);
+		document.cookie = "dist="+escape(j[0].value);
+		document.cookie = "popu="+escape(k[0].value);
+		document.cookie = "imme="+escape(l[0].value);
+		alert(document.cookie);
 	    x.value = position.coords.latitude;
 	    y.value = position.coords.longitude;
 	    document.getElementById('preferences').submit();
 	}
-</script>
 
+	//Perpetuate user info w/ cookies
+	function setFields()
+  	{
+	  		var re = new RegExp("radio" + "=([^;]+)");
+	    	var v1 = re.exec(document.cookie);
+	    	if (v1 != null){
+		    	var rad = document.getElementById(unescape(v1[1]));
+		    	rad.checked = "Checked";
+	    	}
+
+	    	var re = new RegExp("resu" + "=([^;]+)");
+	    	var v2 = re.exec(document.cookie);
+	    	if (v2 != null)[0].value = unescape(v2[1]);
+
+	    	var re = new RegExp("cost" + "=([^;]+)");
+	    	var v3 = re.exec(document.cookie);
+	    	if (v3 != null){
+	    		i[0].value = unescape(v3[1]);
+	    		si[0].value = unescape(v3[1]);
+	    	}
+
+	    	var re = new RegExp("dist" + "=([^;]+)");
+	    	var v4 = re.exec(document.cookie);
+	    	if (v4 != null){
+	    		j[0].value = unescape(v4[1]);
+	    		sj[0].value = unescape(v4[1]);
+	    	}
+
+	    	var re = new RegExp("popu" + "=([^;]+)");
+	    	var v5 = re.exec(document.cookie);
+	    	if (v5 != null){
+	    		k[0].value = unescape(v5[1]);
+	    		sk[0].value = unescape(v5[1]);	
+	    	} 
+
+	    	var re = new RegExp("imme" + "=([^;]+)");
+	    	var v6 = re.exec(document.cookie);
+	    	if (v6 != null){
+	    		l[0].value = unescape(v6[1]);
+	    		sl[0].value = unescape(v6[1]);	
+	    	} 
+  	}
+</script>
   <footer class="footer container-fluid text-center">
   	<div class="logo"><span>Urban Connoisseur</span></div>
 
