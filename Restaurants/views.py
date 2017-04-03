@@ -20,9 +20,7 @@ def search(request):
         imme = request.POST.get('immeTextfield', None)
         resultNum = request.POST.get('resuTextfield', None)
         typeS = request.POST.get('typeSelect', None)
-
-        print(typeS)
-
+        
         #Interpreting in the preferences
         data = [cost, dist, popu, imme]
         for x in range(0, len(data)):

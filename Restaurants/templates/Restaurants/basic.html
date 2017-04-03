@@ -196,7 +196,6 @@ div.hidden{
 		document.cookie = "dist="+escape(j[0].value);
 		document.cookie = "popu="+escape(k[0].value);
 		document.cookie = "imme="+escape(l[0].value);
-		alert(document.cookie);
 	    x.value = position.coords.latitude;
 	    y.value = position.coords.longitude;
 	    document.getElementById('preferences').submit();
@@ -214,7 +213,7 @@ div.hidden{
 
 	    	var re = new RegExp("resu" + "=([^;]+)");
 	    	var v2 = re.exec(document.cookie);
-	    	if (v2 != null)[0].value = unescape(v2[1]);
+	    	if (v2 != null)z[0].value = unescape(v2[1]);
 
 	    	var re = new RegExp("cost" + "=([^;]+)");
 	    	var v3 = re.exec(document.cookie);
