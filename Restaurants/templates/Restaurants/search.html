@@ -41,6 +41,7 @@ div.hidden{
 </style>
 
 </head>
+	<a name = "Top"></a>
   <body>
   <div class="carousel slide" data-ride="carousel">
   	<div class="carousel-inner" role="listbox">
@@ -51,6 +52,23 @@ div.hidden{
 
 	</div>
 	<div>'</div>
+	<section class="container section">
+		<center style="font-size: 20px;">
+			<button><a href = "./" style="color: #000000">Back to Preference Selection</a></button>
+		</center>
+	</section>
+
+{% if messages %}
+<section class="container section">
+	<center>
+		<h3>Uh oh, it looks like there were some errors with your preferences.</h3>
+		<p>Urban Connoisseur has done the best it can to compensate, but if you want more accurate results, you may need to re-enter your preferences. There appear to have been issues in particular with the following fields:</p>
+		{% for message in messages %}
+			<p>{{message}}</p>
+		{% endfor %}
+	</center>
+</section>
+{% endif %}
 
 {% for recommend in contents %}
 	<section class="container section">
@@ -58,10 +76,13 @@ div.hidden{
 		<h1 class="text-center text-uppercase section-title">{{recommend.name}}</h1>
 		<h2 class="text-uppercase">Option {{recommend.NUMBER}}</h2>
 		<div class="col-md-6">
+			<button><a href="#Top">Back to the Top</a></button>
 			<h3>Address:</h3>
 			{% for line in recommend.location.display_address %}
 				<h4>{{line}}</h4>
 			{% endfor %}
+
+			<h3>Approximate Distance: {{recommend.DIST}} miles</h3>
 
 			<h3>What To Expect:</h3>
 			{% for line in recommend.categories %}
@@ -90,9 +111,8 @@ div.hidden{
 		</div>
 
 	</section>
-	
-
 {% endfor %}
+
 <footer class="footer container-fluid text-center">
   	<div class="logo"><span>Urban Connoisseur</span></div>
 

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 import requests
 import math
 
@@ -24,6 +25,14 @@ def search(request):
             data[x] = make_num(data[x])
             if (str(data[x]) == "nan"): # Bind non-numerical outputs to 0
                 data[x] = 0
+                if (x == 0):
+                    messages.add_message(request, messages.INFO, 'Price')
+                elif (x == 1):
+                    messages.add_message(request, messages.INFO, 'Distance')
+                elif (x == 2):
+                    messages.add_message(request, messages.INFO, 'Popularity')
+                elif (x == 3):
+                    messages.add_message(request, messages.INFO, 'Acclaim')
             elif (abs(data[x]) > 10):  # Bind overlarge inputs to their max value
                 data[x] = data[x] / abs(data[x]) * 10
 
@@ -84,13 +93,16 @@ def search(request):
             result = r.json()
 
             #Determine how many results max the user actually wants
-            resultNum = abs(make_num(resultNum))
+            resultNum = make_num(resultNum)
             if (str(resultNum) == "nan"):
                 resultNum = 3
+                messages.add_message(request, messages.INFO, 'Number of Results')
             elif (resultNum > 50):
                 resultNum = 50
+            elif (resultNum < 0):
+                resultNum = 0
             else:
-                resultNum = int(resultNum)
+                resultNum = abs(int(resultNum)) #Absolute value is redundant, but kept just in case
 
             # Optimize within the visible solution space given user preferences
             if (result['total'] < 50):
@@ -120,9 +132,9 @@ def search(request):
                         garbage = 1
 
                     try:
-                        if (measure(float(lat), float(long), result['businesses'][0]['coordinates']['latitude'],
+                        if (measure(float(lat), float(long), result['businesses'][i]['coordinates']['latitude'],
                     result['businesses'][i]['coordinates']['longitude']) > distMax):
-                            distMax = measure(float(lat), float(long), result['businesses'][0]['coordinates']['latitude'],
+                            distMax = measure(float(lat), float(long), result['businesses'][i]['coordinates']['latitude'],
                     result['businesses'][i]['coordinates']['longitude'])
                     except:
                         garbage = 1
@@ -141,9 +153,12 @@ def search(request):
                     except: #If no price listed, do nothing
                         garbage = 1
 
+
                     try: #Minimize distance
-                        score -= data[1] * measure(float(lat), float(long), result['businesses'][0]['coordinates']['latitude'],
+                        score -= data[1] * measure(float(lat), float(long), result['businesses'][i]['coordinates']['latitude'],
                             result['businesses'][i]['coordinates']['longitude']) / distMax
+                        dist = round(measure(float(lat), float(long), result['businesses'][i]['coordinates']['latitude'],
+                            result['businesses'][i]['coordinates']['longitude']) * 0.621371, 2) #Give a rough distance estimate
                     except:
                         garbage = 1
 
@@ -157,7 +172,7 @@ def search(request):
                     except:
                         garbage = 1
 
-                    sortList.append([i, score])
+                    sortList.append([i, score, dist])
 
                 sortList.sort(key=lambda y: y[1])  # Determine the optimal choices given user inputs
                 if (searchSize < resultNum): #If the search space is smaller than requested, return all of them
@@ -171,6 +186,7 @@ def search(request):
                 for z in range(0,len(fetchList)):
                     chosenList.append(result['businesses'][fetchList[z][0]])
                     chosenList[z]['NUMBER'] = str(z + 1) + "/" + str(len(fetchList))
+                    chosenList[z]['DIST'] = fetchList[z][2]
 
             else:
                 error = 2
