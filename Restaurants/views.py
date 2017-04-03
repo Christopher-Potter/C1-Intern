@@ -7,17 +7,37 @@ import math
 
 # Render the main page
 def index(request):
-    return render(request, 'Restaurants/basic.html')
+    try: #Preserve user entered preferences
+        print("Working", COST)
+        return render(request, 'Restaurants/basic.html', {'prior': [COST, DIST, POPU, IMME, RESNUM, CHOICE]})
+    except: #If the user had no saved preferences.
+        print("Sad")
+        return render(request, 'Restaurants/basic.html')
 
 # Wait on the user's request
 def search(request):
     if request.method == 'POST':
         #Grab the html values
+        global COST
+        global DIST
+        global IMME
+        global RESNUM
+        global POPU
+        global CHOICE
         cost = request.POST.get('costTextfield', None)
         dist = request.POST.get('distTextfield', None)
         popu = request.POST.get('popuTextfield', None)
         imme = request.POST.get('immeTextfield', None)
         resultNum = request.POST.get('resuTextfield', None)
+        typeS = request.POST.get('typeSelect', None)
+
+        #Global variable usage to enable persistent preferences
+        COST = cost
+        DIST = dist
+        POPU = popu
+        IMME = imme
+        RESNUM = resultNum
+        CHOICE = typeS
 
         #Interpreting in the preferences
         data = [cost, dist, popu, imme]
@@ -58,18 +78,15 @@ def search(request):
             rad = 40000
         params["radius"] = int(rad)
 
-        type = request.POST.get('typeSelect', None)
-        #will need to alter the nme and the tagline...
-
         #If user specified what they wanted, deal accordingly
-        if type is not None:
-            if (int(type) == 1):
+        if typeS is not None:
+            if (int(typeS) == 1):
                 params["categories"] = "restaurants"
-            elif (int(type) == 2):
+            elif (int(typeS) == 2):
                 params["categories"] = "active"
-            elif (int(type) == 3):
+            elif (int(typeS) == 3):
                 params["categories"] = "arts"
-            elif (int(type) == 4):
+            elif (int(typeS) == 4):
                 params["categories"] = "nightlife"
 
         #Cut down search space if the user really wants to go to the place
@@ -212,7 +229,7 @@ def make_num(s):
     except:
         return "nan"
 
-#Approximate the number of meters between two lat/long coords
+#Approximate the number of meters between two lat/long coords (implemented in case a result with coordinates but no distance is returned)
 def measure(lat1, lon1, lat2, lon2): #Haversine implementation
     R = 6378.137 # Radius of earth in KM
     dLat = lat2 * math.pi / 180 - lat1 * math.pi / 180

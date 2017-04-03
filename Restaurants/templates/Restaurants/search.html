@@ -52,23 +52,25 @@ div.hidden{
 
 	</div>
 	<div>'</div>
-	<section class="container section">
-		<center style="font-size: 20px;">
-			<button><a href = "./" style="color: #000000">Back to Preference Selection</a></button>
-		</center>
-	</section>
+	
 
 {% if messages %}
 <section class="container section">
 	<center>
-		<h3>Uh oh, it looks like there were some errors with your preferences.</h3>
-		<p>Urban Connoisseur has done the best it can to compensate, but if you want more accurate results, you may need to re-enter your preferences. There appear to have been issues in particular with the following fields:</p>
+		<h3>Uh oh, it looks like there were some errors in your preferences.</h3>
+		<p style="font-size: 18px;">Urban Connoisseur has done the best it can to compensate, but if you want more accurate results, you may need to re-enter your preferences. There appear to have been issues in particular with the following field(s):</p>
 		{% for message in messages %}
-			<p>{{message}}</p>
+			<p style="font-size: 18px;">{{message}}</p>
 		{% endfor %}
 	</center>
 </section>
 {% endif %}
+
+<section class="container section">
+		<center style="font-size: 20px;">
+			<button><a href = "./#Prefs" style="color: #000000">Back to Preference Selection</a></button>
+		</center>
+	</section>
 
 {% for recommend in contents %}
 	<section class="container section">

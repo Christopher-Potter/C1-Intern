@@ -97,53 +97,104 @@ div.hidden{
   				<form method="POST" action="/search" id="preferences">
 					{% csrf_token %}
 					<h3>What are you looking for?</h3>
-					<div>
-						<input type="radio" name="typeSelect" value = "1">
-						<label>Restaurants</label>
-					</div>
-					<div>
-						<input type="radio" name="typeSelect" value = "2">
-						<label>Activities</label>
-					</div>
-					<div>
-						<input type="radio" name="typeSelect" value = "3">
-						<label>Entertainment</label>
-					</div>
-					<div>
-						<input type="radio" name="typeSelect" value = "4">
-						<label>Nightlife</label>
-					</div>
+					{% if prior %} <!-- Persisting preferences the hard way -->
+						<div>
+							<input type="radio" name="typeSelect" value = "1" id="1">
+							<label>Restaurants</label>
+						</div>
+						<div>
+							<input type="radio" name="typeSelect" value = "2" id="2">
+							<label>Activities</label>
+						</div>
+						<div>
+							<input type="radio" name="typeSelect" value = "3" id="3">
+							<label>Entertainment</label>
+						</div>
+						<div>
+							<input type="radio" name="typeSelect" value = "4" id="4">
+							<label>Nightlife</label>
+						</div>
+						<script>
+							document.getElementById({{prior.5}}).checked = "checked";
+						</script>
+						<h3 class="text-uppercase">Max number of desired results?</h3>
+						<div>
+							<input type="text" name="resuTextfield", value = "{{prior.4}}">
+							<label>Assumes 3 by default (50 max)</label>
+						</div>
 
-					<h3 class="text-uppercase">Max number of desired results?</h3>
-					<div>
-						<input type="text" name="resuTextfield", value = "3">
-						<label>Assumes 3 by default (50 max)</label>
-					</div>
+						<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
+						<div>
+							<input oninput="rangeInputC.value=costTextfield.value" id="box" type="text" value="{{prior.0}}" name="costTextfield" for="rangeInputC" oninput="rangeInputC.value=costTextfield.value" />
+							<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
+							<input for="costTextfield" oninput="costTextfield.value=rangeInputC.value" value="{{prior.0}}" id="slider" type="range" min="-10" max="10" name="rangeInputC" style = "width: 50%"/>
+						</div>
+						<div style="color: #43BFC7;">'</div>
+						<div>
+							<input oninput="rangeInputD.value=distTextfield.value" id="box" type="text" value="{{prior.1}}" name="distTextfield" for="rangeInputD" oninput="rangeInputD.value=distTextfield.value" />
+							<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
+							<input for="distTextfield" oninput="distTextfield.value=rangeInputD.value" value="{{prior.1}}" id="slider" type="range" min="-10" max="10" name="rangeInputD" style = "width: 50%"/>
+						</div>
+						<div style="color: #43BFC7;">'</div>
+						<div>
+							<input oninput="rangeInputA.value=popuTextfield.value" id="box" type="text" value="{{prior.2}}" name="popuTextfield" for="rangeInputA" oninput="rangeInputA.value=popuTextfield.value" />
+							<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
+							<input for="popuTextfield" oninput="popuTextfield.value=rangeInputA.value" id="slider" value="{{prior.2}}" type="range" min="-10" max="10" name="rangeInputA" style = "width: 50%"/>
+	      				</div>
+	      				<div style="color: #43BFC7;">'</div>
+						<div>
+							<input oninput="rangeInputI.value=immeTextfield.value" id="box" type="text" value="{{prior.3}}" name="immeTextfield" for="rangeInputI" oninput="rangeInputI.value=immeTextfield.value" />
+							<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
+							<input for="immeTextfield" oninput="immeTextfield.value=rangeInputI.value" id="slider" value="{{prior.3}}" type="range" min="-10" max="10" name="rangeInputI" style = "width: 50%"/>
+						</div>
+					{% else %}
+						<div>
+							<input type="radio" name="typeSelect" value = "1">
+							<label>Restaurants</label>
+						</div>
+						<div>
+							<input type="radio" name="typeSelect" value = "2">
+							<label>Activities</label>
+						</div>
+						<div>
+							<input type="radio" name="typeSelect" value = "3">
+							<label>Entertainment</label>
+						</div>
+						<div>
+							<input type="radio" name="typeSelect" value = "4">
+							<label>Nightlife</label>
+						</div>
+						<h3 class="text-uppercase">Max number of desired results?</h3>
+						<div>
+							<input type="text" name="resuTextfield", value = "3">
+							<label>Assumes 3 by default (50 max)</label>
+						</div>
 
-					<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
-					<div>
-						<input oninput="rangeInputC.value=costTextfield.value" id="box" type="text" value="0" name="costTextfield" for="rangeInputC" oninput="rangeInputC.value=costTextfield.value" />
-						<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
-						<input for="costTextfield" oninput="costTextfield.value=rangeInputC.value" id="slider" type="range" min="-10" max="10" name="rangeInputC" style = "width: 50%"/>
-					</div>
-					<div style="color: #43BFC7;">'</div>
-					<div>
-						<input oninput="rangeInputD.value=distTextfield.value" id="box" type="text" value="0" name="distTextfield" for="rangeInputD" oninput="rangeInputD.value=distTextfield.value" />
-						<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
-						<input for="distTextfield" oninput="distTextfield.value=rangeInputD.value" id="slider" type="range" min="-10" max="10" name="rangeInputD" style = "width: 50%"/>
-					</div>
-					<div style="color: #43BFC7;">'</div>
-					<div>
-						<input oninput="rangeInputA.value=popuTextfield.value" id="box" type="text" value="0" name="popuTextfield" for="rangeInputA" oninput="rangeInputA.value=popuTextfield.value" />
-						<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
-						<input for="popuTextfield" oninput="popuTextfield.value=rangeInputA.value" id="slider" type="range" min="-10" max="10" name="rangeInputA" style = "width: 50%"/>
-      				</div>
-      				<div style="color: #43BFC7;">'</div>
-					<div>
-						<input oninput="rangeInputI.value=immeTextfield.value" id="box" type="text" value="0" name="immeTextfield" for="rangeInputI" oninput="rangeInputI.value=immeTextfield.value" />
-						<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
-						<input for="immeTextfield" oninput="immeTextfield.value=rangeInputI.value" id="slider" type="range" min="-10" max="10" name="rangeInputI" style = "width: 50%"/>
-					</div>
+						<h3 class="text-uppercase">Enter your preferences (-10 to 10)</h3>
+						<div>
+							<input oninput="rangeInputC.value=costTextfield.value" id="box" type="text" value="0" name="costTextfield" for="rangeInputC" oninput="rangeInputC.value=costTextfield.value" />
+							<label>Price: (-10 = Cheap) -> (10 = Expensive)</label>
+							<input for="costTextfield" oninput="costTextfield.value=rangeInputC.value" id="slider" type="range" min="-10" max="10" name="rangeInputC" style = "width: 50%"/>
+						</div>
+						<div style="color: #43BFC7;">'</div>
+						<div>
+							<input oninput="rangeInputD.value=distTextfield.value" id="box" type="text" value="0" name="distTextfield" for="rangeInputD" oninput="rangeInputD.value=distTextfield.value" />
+							<label>Distance: (-10 = Nearby) -> (10 = A Galaxy Far Far Away)</label>
+							<input for="distTextfield" oninput="distTextfield.value=rangeInputD.value" id="slider" type="range" min="-10" max="10" name="rangeInputD" style = "width: 50%"/>
+						</div>
+						<div style="color: #43BFC7;">'</div>
+						<div>
+							<input oninput="rangeInputA.value=popuTextfield.value" id="box" type="text" value="0" name="popuTextfield" for="rangeInputA" oninput="rangeInputA.value=popuTextfield.value" />
+							<label>Popularity: (-10 = Never reviewed) -> (10 = Everyone has tried it)</label>
+							<input for="popuTextfield" oninput="popuTextfield.value=rangeInputA.value" id="slider" type="range" min="-10" max="10" name="rangeInputA" style = "width: 50%"/>
+	      				</div>
+	      				<div style="color: #43BFC7;">'</div>
+						<div>
+							<input oninput="rangeInputI.value=immeTextfield.value" id="box" type="text" value="0" name="immeTextfield" for="rangeInputI" oninput="rangeInputI.value=immeTextfield.value" />
+							<label>Acclaim: (-10 = Poorly rated) -> (10 = Highly acclaimed)</label>
+							<input for="immeTextfield" oninput="immeTextfield.value=rangeInputI.value" id="slider" type="range" min="-10" max="10" name="rangeInputI" style = "width: 50%"/>
+						</div>
+					{% endif %}
 					
 					<!-- Grab the user's location -->
 					<div class = "hidden">
